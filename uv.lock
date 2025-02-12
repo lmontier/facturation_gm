@@ -317,7 +317,7 @@ wheels = [
 ]
 
 [[package]]
-name = "jojo-out"
+name = "facturation_gm"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
