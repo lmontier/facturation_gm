@@ -4,6 +4,12 @@ import streamlit as st
 GROUP_COLUMS = ["resa_dossier", "resa_ocup_nom", "resa_ocup_prenom", "lot_ref"]
 
 
+@st.cache_data
+def convert_df(df):
+    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return df.to_csv().encode("utf-8")
+
+
 def main():
     uploaded_file = st.file_uploader("Choose a file")
     if uploaded_file is not None:
@@ -21,9 +27,16 @@ def main():
             )
             groups[name] = data
 
-        dff = pd.DataFrame(groups).T.fillna(0)
+        result_df = pd.DataFrame(groups).T.fillna(0)
 
-        st.dataframe(dff)
+        st.dataframe(result_df)
+
+        st.download_button(
+            label="Download data as CSV",
+            data=convert_df(result_df),
+            file_name="extract_conversion.csv",
+            mime="text/csv",
+        )
 
 
 if __name__ == "__main__":
