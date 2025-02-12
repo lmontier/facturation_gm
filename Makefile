@@ -7,3 +7,6 @@ install:
 
 start:
 	uv run streamlit run st_demo.py
+
+generate-requirements:
+	uv export --no-hashes --format requirements-txt > requirements.txt
