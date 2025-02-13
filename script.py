@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 
-df = pd.read_excel("data/extraction_2025.xls")
+df = pd.read_excel("data/R3.xls")
 
 
 def format_name(_df: pd.DataFrame) -> pd.Series:
@@ -39,6 +39,7 @@ exploded_df = (
 
 
 # %% Map data
+exploded_df.to_csv("data/predone.csv")
 
 with open("column_mapping.json", "r") as file:
     column_mapping = json.load(file)
