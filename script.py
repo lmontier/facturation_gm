@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("test.csv", sep="\t")
+df = pd.read_excel("data/extraction_2025.xls")
 
 
 group_colums = ["resa_dossier", "resa_ocup_nom", "resa_ocup_prenom", "lot_ref"]
