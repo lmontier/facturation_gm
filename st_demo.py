@@ -1,7 +1,11 @@
+from datetime import datetime
+import os
 import pandas as pd
 import streamlit as st
 import json
 
+FINAL_FILENAME = "extract_converted.xlsx"
+FINAL_FILEPATH = os.path.join("data", FINAL_FILENAME)
 GROUP_COLUMS = [
     "resa_dossier",
     "resa_ocup_nom",
@@ -25,6 +29,15 @@ def format_date(date_series: pd.Series) -> pd.Series:
     return date_series.strftime("%Y %m %d")
 
 
+def get_excel_filename():
+    return (
+        FINAL_FILENAME.strip(".xslx")
+        + "_"
+        + datetime.now().strftime("%Y%m%d_%H%M%S")
+        + ".xlsx"
+    )
+
+
 def main():
     uploaded_file = st.file_uploader("Choose a file")
     if uploaded_file is not None:
@@ -43,34 +56,36 @@ def main():
             groups[name] = data
 
         # %%
-        exploded_df = (
-            pd.DataFrame(groups)
-            .T.reset_index()
-            .rename(
-                columns={
-                    f"level_{i}": GROUP_COLUMS[i] for i in range(len(GROUP_COLUMS))
-                }
+        final_df = (
+            (
+                pd.DataFrame(groups)
+                .T.reset_index()
+                .rename(
+                    columns={
+                        f"level_{i}": GROUP_COLUMS[i] for i in range(len(GROUP_COLUMS))
+                    }
+                )
+                .assign(
+                    Nom=lambda _df: _df.pipe(format_name),
+                    resa_deb=lambda _df: _df.resa_deb.map(format_date),
+                    resa_fin=lambda _df: _df.resa_fin.map(format_date),
+                )
             )
-            .assign(
-                Nom=lambda _df: _df.pipe(format_name),
-                resa_deb=lambda _df: _df.resa_deb.map(format_date),
-                resa_fin=lambda _df: _df.resa_fin.map(format_date),
-            )
+            .rename(columns=COLUMN_MAPPING)
+            .reindex(columns=COLUMN_MAPPING.values())
         )
 
-        final_df = exploded_df.rename(columns=COLUMN_MAPPING).reindex(
-            columns=COLUMN_MAPPING.values()
-        )
+        st.subheader("Tableau Fial:")
         st.dataframe(final_df)
 
         # %% Export to excel
-        final_df.to_excel("formatted_extract.xlsx", index=False)
+        final_df.to_excel(FINAL_FILEPATH, index=False)
 
-        with open("formatted_extract.xlsx", "rb") as f:
+        with open(FINAL_FILEPATH, "rb") as f:
             st.download_button(
                 "Download Zip",
                 f,
-                file_name="formatted_extract.xlsx",
+                file_name=get_excel_filename(),
                 mime="application/octet-stream",
             )
 
