@@ -79,7 +79,7 @@ def main():
 
         with open(excel_filepath, "rb") as f:
             st.download_button(
-                "Download Zip",
+                "Télécharger",
                 f,
                 file_name=excel_filename,
                 mime="application/octet-stream",
