@@ -21,9 +21,8 @@ def format_name(_df: pd.DataFrame) -> pd.Series:
     return _df.resa_ocup_civi + " " + _df.resa_ocup_prenom + " " + _df.resa_ocup_nom
 
 
-@st.cache_data
-def convert_df(df):
-    return df.to_csv().encode("utf-8")
+def format_date(date_series: pd.Series) -> pd.Series:
+    return date_series.strftime("%Y %m %d")
 
 
 def main():
@@ -52,7 +51,11 @@ def main():
                     f"level_{i}": GROUP_COLUMS[i] for i in range(len(GROUP_COLUMS))
                 }
             )
-            .assign(Nom=lambda _df: _df.pipe(format_name))
+            .assign(
+                Nom=lambda _df: _df.pipe(format_name),
+                resa_deb=lambda _df: _df.resa_deb.map(format_date),
+                resa_fin=lambda _df: _df.resa_fin.map(format_date),
+            )
         )
 
         final_df = exploded_df.rename(columns=COLUMN_MAPPING).reindex(
@@ -60,12 +63,16 @@ def main():
         )
         st.dataframe(final_df)
 
-        st.download_button(
-            label="Download data as CSV",
-            data=convert_df(final_df),
-            file_name="extract_conversion.csv",
-            mime="text/csv",
-        )
+        # %% Export to excel
+        final_df.to_excel("formatted_extract.xlsx", index=False)
+
+        with open("formatted_extract.xlsx", "rb") as f:
+            st.download_button(
+                "Download Zip",
+                f,
+                file_name="formatted_extract.xlsx",
+                mime="application/octet-stream",
+            )
 
 
 if __name__ == "__main__":
