@@ -75,7 +75,7 @@ def main():
             .reindex(columns=COLUMN_MAPPING.values())
         )
 
-        st.subheader("Tableau Fial:")
+        st.subheader("Tableau Final:")
         st.dataframe(final_df)
 
         # %% Export to excel
