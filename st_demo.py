@@ -4,8 +4,6 @@ import pandas as pd
 import streamlit as st
 import json
 
-FINAL_FILENAME = "extract_converted.xlsx"
-FINAL_FILEPATH = os.path.join("data", FINAL_FILENAME)
 GROUP_COLUMS = [
     "resa_dossier",
     "resa_ocup_nom",
@@ -30,12 +28,7 @@ def format_date(date_series: pd.Series) -> pd.Series:
 
 
 def get_excel_filename():
-    return (
-        FINAL_FILENAME.strip(".xslx")
-        + "_"
-        + datetime.now().strftime("%Y%m%d_%H%M%S")
-        + ".xlsx"
-    )
+    return "extract_converted_" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".xlsx"
 
 
 def main():
@@ -79,13 +72,16 @@ def main():
         st.dataframe(final_df)
 
         # %% Export to excel
-        final_df.to_excel(FINAL_FILEPATH, index=False)
+        excel_filename = get_excel_filename()
+        excel_filepath = os.path.join("data", excel_filename)
 
-        with open(FINAL_FILEPATH, "rb") as f:
+        final_df.to_excel(excel_filepath, index=False)
+
+        with open(excel_filepath, "rb") as f:
             st.download_button(
                 "Download Zip",
                 f,
-                file_name=get_excel_filename(),
+                file_name=excel_filename,
                 mime="application/octet-stream",
             )
 
