@@ -18,36 +18,6 @@ GROUP_COLUMS = [
     "resa_fin",
 ]
 
-FINAL_COLUMNS = [
-    "Réf",
-    "Nom",
-    "ad1",
-    "ad2",
-    "cp-ville",
-    "pays",
-    "date arrivée",
-    "date départ",
-    "Kit serviette (serv + drap)",
-    "Kit petit lit (dh + dplat + t)",
-    "Kit couette petit lit (dh + hc + t)",
-    "Kit bq gigogne (2 dh + 1 dplat + 2t)",
-    "Kit gd lit (dh + dplat + 2t)",
-    "Kit couette 140",
-    "Kit couette 160",
-    "Kit couette 180",
-    "Tapis de bain",
-    "ss total 1",
-    "Kit arrivée",
-    "Pose literie",
-    "Nb lit fait",
-    "Lit Bébé",
-    "Chaise Bébé",
-    "Baignoire",
-    "Pose matériel bébé",
-    "ss total 2",
-    "Mt Ménage = total 3",
-]
-
 
 groups = {}
 for name, group in df.groupby(GROUP_COLUMS):
