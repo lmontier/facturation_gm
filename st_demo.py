@@ -27,6 +27,15 @@ def format_date(date_series: pd.Series) -> pd.Series:
     return date_series.strftime("%Y %m %d")
 
 
+def move_menage_price_into_qte(df: pd.DataFrame) -> pd.Series:
+    return df.assign(
+        resa_prest_qte=lambda _df: _df.resa_prest_qte.mask(
+            _df.prest_titre_fra == "Ménage Fin de séjour",
+            _df.resa_prest_qte * _df.resa_prest_total,
+        )
+    )
+
+
 def get_excel_filename():
     return "extract_converted_" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".xlsx"
 
@@ -39,8 +48,9 @@ def main():
         with st.expander("Voir le fichier:", expanded=False):
             st.dataframe(df)
 
+        preproc_df = df.pipe(move_menage_price_into_qte)
         groups = {}
-        for name, group in df.groupby(GROUP_COLUMS):
+        for name, group in preproc_df.groupby(GROUP_COLUMS):
             data = (
                 group.loc[:, ["prest_titre_fra", "resa_prest_qte"]]
                 .set_index("prest_titre_fra")
