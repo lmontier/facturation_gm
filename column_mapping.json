@@ -16,14 +16,14 @@
     "Kit couette gd lit 160 (dh+hc+2t)":"Kit couette 160",
     "Kit couette gd lit 180 (dh+hc+2t)":"Kit couette 180",
     "Tapis de bain":"Tapis de bain",
-    "MISSING_0":"ss total 1",
-    "MISSING_1":"Kit arrivée",
+    "NO_MAPPING_5":"ss total 1",
+    "MISSING_0":"Kit arrivée",
     "Forfait pose linge":"Pose literie",
     "Lit fait à l'arrivée (location linge obligatoire)":"Nb lit fait",
     "Location lit bébé":"Lit Bébé",
     "Location chaise bébé":"Chaise Bébé",
-    "MISSING_2":"Baignoire",
-    "MISSING_3":"Pose matériel bébé",
-    "MISSING_4":"ss total 2",
-    "MISSING_5":"Mt Ménage = total 3"
+    "MISSING_1":"Baignoire",
+    "MISSING_2":"Pose matériel bébé",
+    "NO_MAPPING_6":"ss total 2",
+    "Ménage Fin de séjour":"Mt Ménage = total 3"
 }
